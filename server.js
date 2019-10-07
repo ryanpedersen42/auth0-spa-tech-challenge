@@ -17,12 +17,14 @@ app.use(bodyParser.urlencoded({
 
 const port = 3005;
 
+//check config
 if (!authConfig.domain || !authConfig.audience) {
   throw new Error(
     "Please make sure that auth_config.json is in place and populated"
   );
 }
 
+//set up JWT check
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
@@ -42,15 +44,16 @@ function doRequest(options) {
         reject(error)
         return
       }
-      
       resolve(JSON.parse(body.body));
     })
   })
 }
 
+//main post request
 app.post("/api/external", checkJwt, async (req, res, next) => {
   const { user } = req.body.bodyObject;
 
+  //initial token options to call for users oauth token
   var getTokenOptions = {
     method: 'POST',
     url: 'https://dev-irmh6clw.auth0.com/oauth/token',
@@ -60,6 +63,7 @@ app.post("/api/external", checkJwt, async (req, res, next) => {
   
   //pass through user that was in initial post header
   res.locals.user = user;
+
   try {
     const response = await doRequest(getTokenOptions)
     //pass through access token
@@ -73,6 +77,7 @@ app.post("/api/external", checkJwt, async (req, res, next) => {
 }, async (req, res, next) => {
   const { access_token, user } = res.locals;
 
+  //next set of options to get user info from mgmt API with token
   var options = {
     method: 'GET',
     url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
@@ -80,6 +85,7 @@ app.post("/api/external", checkJwt, async (req, res, next) => {
   };
 
   try {
+    //find the right object with the oauth instead of taking the first..
     const response = await doRequest(options)
     res.locals.googleToken = response.identities[0].access_token;
     next()
@@ -101,7 +107,7 @@ app.post("/api/external", checkJwt, async (req, res, next) => {
       // peopleResponse = await people.people.get({
       //   resourceName: 'contactGroups',
       // })
-      console.log(googleToken)
+      // console.log(googleToken)
     } catch(err) {
       console.log('err', err)
     }

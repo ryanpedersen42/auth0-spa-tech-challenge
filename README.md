@@ -28,4 +28,4 @@ The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
 ## Usage 
-You can log in with email or password or Google. If you log in with email / password, you will receive an email 
+You can log in with email or password or Google. If you log in with email / password, you will receive an email to verify. You can only order once you have verified. You can see if you are verified on your profile page.

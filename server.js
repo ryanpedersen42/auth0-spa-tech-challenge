@@ -15,7 +15,7 @@ const { google } = require("googleapis");
 
 const app = express();
 
-const port = 3005;
+const port = process.env.PORT || 3005;
 
 app.use(cors());
 

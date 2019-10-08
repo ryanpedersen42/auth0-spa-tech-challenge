@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run build && npm run server",
+    "start": "npm run server",
     "build": "npm run remove-build && react-scripts build",
     "remove-build": "rm -rf ./build",
     "test": "react-scripts test",

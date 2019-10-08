@@ -112,26 +112,6 @@ app.post(
 
     const { access_token, user } = res.locals;
 
-    const people = google.people({
-      version: "v1",
-      api: "AIzaSyD3VdtuQRg6GrT4bVNFW3PR-W4Xp1sGu4E",
-      auth: `Bearer ya29.ImSbB4bs6DxAlEhFQfycnt8XoGmIOxEwDr_bALbGgfs5HPyb6CKXh7IY1lQuzE7YqkOUL34Jd3K7cM3ZPVjj0oEoBHVtoCMh1mI-pXSJ6HAl5eRNytE_1t1oTSo8Aaw_phvis3CJ`
-    });
-
-    //next set of options to get user info from mgmt API with token
-    // var googleOptions = {
-    //   method: 'GET',
-    //   url: `https://dev-irmh6clw.auth0.com/userinfo`,
-    //   headers: {authorization: `Bearer ${access_token}`}
-    // }
-
-    // async function googleCall() {
-    //   const res = await people.people.get({
-    //     resourceName: "people/me",
-    //     personFields: "emailAddresses,names"
-    //   });
-    //   return res.data;
-    // }
     //!!!!! DO THIS !!!!!
     //If a user signs in with Google, use Auth0 to call the Google People API to fetch the total
     // number of Google connections a user has and store that count in their user profile.

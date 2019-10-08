@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm run build && npm run server",
+    "start": "npm run remove-build && npm run build && npm run server",
     "build": "react-scripts build",
+    "remove-build": "rm -rf ./build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "spa": "react-scripts start",

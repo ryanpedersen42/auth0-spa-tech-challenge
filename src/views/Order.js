@@ -2,7 +2,7 @@ import React from "react";
 import { Container } from "reactstrap";
 import { Button } from "reactstrap";
 
-import Loading from "../components/Loading";
+import Loading from "../components/Loading.js";
 import { useAuth0 } from "../react-auth0-spa";
 
 const OrderPage = () => {

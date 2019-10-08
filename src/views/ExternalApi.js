@@ -36,10 +36,25 @@ const ExternalApi = () => {
     }
   };
 
-  const callApi2 = async () => {
+  const getMetadata = async () => {
+    const token = await getTokenSilently();
+    const fullUser = await getUser();
+    const user = fullUser.sub;
+    const userEmail = fullUser.email
+
+    const bodyObject = {
+      token: token,
+      email: userEmail,
+    }
+
     try {
+
       const response2 = await fetch("/api/test", {
-        method: 'get',
+        method: 'post',
+        headers : { 
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        }, body: JSON.stringify({bodyObject})
         })
       const responseData2 = await response2.json();
 
@@ -58,8 +73,8 @@ const ExternalApi = () => {
         <Button color="primary" className="mt-5" onClick={callApi}>
           Ping API
         </Button>
-        <Button color="primary" className="mt-5" onClick={callApi2}>
-          Ping API
+        <Button color="primary" className="mt-5" onClick={getMetadata}>
+          Get Metadata
         </Button>
       </div>
 

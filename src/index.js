@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.js";
 import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./react-auth0-spa";
-import config from "./auth_config.json";
+import config from "./auth_config";
 import history from "./utils/history";
 
 const onRedirectCallback = appState => {

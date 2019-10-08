@@ -4,11 +4,16 @@ const jwksRsa = require("jwks-rsa");
 const authConfig = require("./src/auth_config.json");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const { join } = require("path");
 var request = require("request");
 
 const { google } = require("googleapis");
 
 const app = express();
+
+const port = 3005;
 
 app.use(cors());
 
@@ -19,7 +24,9 @@ app.use(
   })
 );
 
-const port = 3005;
+app.use(morgan("dev"));
+app.use(helmet());
+app.use(express.static(join(__dirname, "build")));
 
 //check config
 if (!authConfig.domain || !authConfig.audience) {
@@ -41,6 +48,7 @@ const checkJwt = jwt({
   algorithm: ["RS256"]
 });
 
+//request call to be used for api tokens below
 function doRequest(options) {
   return new Promise((resolve, reject) => {
     request(options, function(error, body) {
@@ -73,6 +81,7 @@ app.post(
     res.locals.token = token;
     try {
       const response = await doRequest(getTokenOptions);
+      console.log(response);
       //pass through access token
       res.locals.access_token = response.access_token;
       next();
@@ -88,36 +97,29 @@ app.post(
     var options = {
       method: "GET",
       url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
-      headers: { authorization: `Bearer ${access_token}` ,
-      connection_scope:[]
-    }
+      headers: { authorization: `Bearer ${access_token}` }
     };
 
     try {
       //find the right object with the oauth instead of taking the first..
       const response = await doRequest(options);
-      console.log(response.identities[0])
-      //res.locals.googleToken = 
-      readConnections(response.identities[0].access_token)
+
+      res.locals.googleToken = response.identities[0].access_token;
       next();
     } catch (err) {
       console.log("err: ", err);
       res.status(500);
     }
-
-    return res.status(200).send(res.locals);
+    console.log(res.locals);
+    return res.status(200).send("got through it!");
   },
   async (req, res, next) => {
     const { googleToken } = res.locals;
 
     const { access_token, user } = res.locals;
 
-    //!!!!! DO THIS !!!!!
-    //If a user signs in with Google, use Auth0 to call the Google People API to fetch the total
-    // number of Google connections a user has and store that count in their user profile.
-
     try {
-      console.log(googleToken);
+      // console.log(googleToken);
     } catch (err) {
       console.log("err", err);
     }
@@ -143,26 +145,107 @@ const readConnections = googleToken => {
   });
 };
 
-app.post("/api/test", checkJwt, async (req, res, next) => {
-  const { email } = req.body.bodyObject;
+app.post(
+  "/api/test",
+  checkJwt,
+  async (req, res, next) => {
+    const { token, userEmail, user } = req.body.bodyObject;
 
-  var fullContactOptions = {
-    method: "POST",
-    url: `https://api.fullcontact.com/v3/person.enrich`,
-    headers: {
-      authorization: `Bearer ${authConfig.fullContact_token}`,
-    }, body: JSON.stringify({"email": email})
-  };
+    //initial token options to call for users oauth token
+    var getTokenOptions = {
+      method: "POST",
+      url: "https://dev-irmh6clw.auth0.com/oauth/token",
+      headers: { "content-type": "application/json" },
+      body: `{"client_id":"${authConfig.client_id}","client_secret":"${authConfig.client_secret}","audience":"${authConfig.server_audience}","grant_type":"client_credentials"}`
+    };
 
-  try {
-    const fullContact = await doRequest(fullContactOptions)
+    //pass through user that was in initial post header
+    res.locals.token = token;
+    res.locals.email = userEmail;
+    res.locals.user = user;
 
-    return res.status(200).send(fullContact)
+    try {
+      const response = await doRequest(getTokenOptions);
+      res.locals.access_token = response.access_token;
 
-  } catch(err) {
-    console.log('final', err)
+      next();
+    } catch (err) {
+      console.log("err: ", err);
+      res.status(500);
+    }
+  },
+  async (req, res, next) => {
+    const { access_token, user, token } = res.locals;
+
+    //next set of options to get user info from mgmt API with token
+    var userInfoOptions = {
+      method: "GET",
+      url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
+      headers: { authorization: `Bearer ${access_token}` }
+    };
+
+    try {
+      //see if they already have metadata
+      const response = await doRequest(userInfoOptions);
+      if (!response.user_metadata.gender) {
+        return next();
+      }
+      return res.status(200).send(response.user_metadata);
+    } catch (err) {
+      console.log("err: ", err);
+      res.status(500);
+    }
+  },
+  async (req, res, next) => {
+    const { email } = res.locals;
+
+    var fullContactOptions = {
+      method: "POST",
+      url: `https://api.fullcontact.com/v3/person.enrich`,
+      headers: {
+        authorization: `Bearer ${authConfig.fullContact_token}`
+      },
+      body: JSON.stringify({ email: email })
+    };
+
+    try {
+      const fullContact = await doRequest(fullContactOptions);
+      res.locals.gender = fullContact.gender;
+      console.log(fullContact);
+      next();
+    } catch (err) {
+      console.log("final", err);
+    }
+  },
+  async (req, res, next) => {
+    const { user, access_token, gender } = res.locals;
+
+    var metadataOptions = {
+      method: "PATCH",
+      url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
+      headers: {
+        authorization: `Bearer ${access_token}`,
+        "content-type": "application/json"
+      },
+      body: { user_metadata: { gender: gender } },
+      json: true
+    };
+
+    try {
+      request(metadataOptions, function(error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+      });
+    } catch (err) {
+      console.log("final", err);
+    }
+    return res.status(200).send("just added the metadata");
   }
-  return res.status(200).send('test working');
-});
+);
+
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, "build/index.html"));
+})
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));

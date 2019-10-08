@@ -33,6 +33,7 @@ const NavBar = () => {
     <div className="nav-container">
       <Navbar color="light" light expand="md">
         <Container>
+        {/* eslint-disable-next-line */}
           <span role="img" description="pizza emojis">🍕Pizza 42 🍕</span>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>

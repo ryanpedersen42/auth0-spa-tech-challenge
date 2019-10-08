@@ -13,11 +13,13 @@ const ExternalApi = () => {
       const token = await getTokenSilently();
       const fullUser = await getUser();
       const user = fullUser.sub;
+      console.log(fullUser.user_metadata)
 
       const bodyObject = {
         token: token,
         user: user,
       }
+
       const response = await fetch("/api/external", {
         method: 'post',
         headers : { 
@@ -27,36 +29,37 @@ const ExternalApi = () => {
         body: JSON.stringify({bodyObject})
         })
 
-      const responseData = await response.json();
-
+      const responseData = await response.text();
       setShowResult(true);
       setApiMessage(responseData);
-    } catch (error) {
-      console.error(error);
-    }
+
+      } catch (error) {
+        console.error(error);
+      }
   };
 
-  const getMetadata = async () => {
+  const checkMetadata = async () => {
     const token = await getTokenSilently();
     const fullUser = await getUser();
+    const userEmail = fullUser.email;
     const user = fullUser.sub;
-    const userEmail = fullUser.email
 
     const bodyObject = {
       token: token,
-      email: userEmail,
+      userEmail: userEmail,
+      user: user,
     }
 
     try {
-
-      const response2 = await fetch("/api/test", {
+      const metadataFetch = await fetch("/api/test", {
         method: 'post',
         headers : { 
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         }, body: JSON.stringify({bodyObject})
         })
-      const responseData2 = await response2.json();
+
+      const responseData2 = await metadataFetch.json();
 
       setShowResult(true);
       setApiMessage(responseData2);
@@ -68,13 +71,13 @@ const ExternalApi = () => {
   return (
     <>
       <div className="mb-5">
-        <h1>External API</h1>
+        <h1>Call the APIs</h1>
 
         <Button color="primary" className="mt-5" onClick={callApi}>
-          Ping API
+          Get Connections
         </Button>
-        <Button color="primary" className="mt-5" onClick={getMetadata}>
-          Get Metadata
+        <Button color="primary" className="mt-5" onClick={checkMetadata}>
+          Get Gender
         </Button>
       </div>
 

@@ -1,7 +1,8 @@
 # Auth0 Technical Challenge
 
 ## Running the application
-### Create an auth_config.json in your src directory, and then include it in your .gitignore. It should include the following: 
+
+Create an auth_config.json in your src directory, and then include it in your .gitignore. It should include the following: 
 ```
 {
   "domain": "[YOUR_AUTH0_DOMAIN]",

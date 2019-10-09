@@ -43,10 +43,10 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    // jwksUri: `https://${REACT_APP_DOMAIN}/.well-known/jwks.json`
+    jwksUri: `https://${REACT_APP_DOMAIN}/.well-known/jwks.json`
   }),
-  // audience: REACT_APP_AUDIENCE,
-  // issuer: `https://${REACT_APP_DOMAIN}/`,
+  audience: REACT_APP_AUDIENCE,
+  issuer: `https://${REACT_APP_DOMAIN}/`,
   algorithm: ["RS256"]
 });
 

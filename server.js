@@ -46,7 +46,7 @@ const checkJwt = jwt({
     jwksUri: `https://${REACT_APP_DOMAIN}/.well-known/jwks.json`
   }),
   // audience: REACT_APP_AUDIENCE,
-  issuer: `https://${REACT_APP_DOMAIN}/`,
+  // issuer: `https://${REACT_APP_DOMAIN}/`,
   algorithm: ["RS256"]
 });
 
@@ -62,11 +62,6 @@ function doRequest(options) {
     });
   });
 }
-
-app.get('/api/testing', async (req, res) => {
-  return res.status(200).send("just added the metadata");
-}
-)
 
 //main post request
 app.post(

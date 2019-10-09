@@ -43,7 +43,7 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${REACT_APP_DOMAIN}/.well-known/jwks.json`
+    // jwksUri: `https://${REACT_APP_DOMAIN}/.well-known/jwks.json`
   }),
   // audience: REACT_APP_AUDIENCE,
   // issuer: `https://${REACT_APP_DOMAIN}/`,
@@ -66,7 +66,7 @@ function doRequest(options) {
 //main post request
 app.post(
   "/api/external",
-  checkJwt,
+  // checkJwt,
   async (req, res, next) => {
     const { user, token } = req.body.bodyObject;
 
@@ -149,7 +149,7 @@ const readConnections = googleToken => {
 
 app.post(
   "/api/test",
-  // checkJwt,
+  checkJwt,
   async (req, res, next) => {
     const { token, userEmail, user } = req.body.bodyObject;
 

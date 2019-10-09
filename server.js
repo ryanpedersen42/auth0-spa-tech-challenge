@@ -31,11 +31,11 @@ app.use(helmet());
 app.use(express.static(join(__dirname, "build")));
 
 //check config
-if (!REACT_APP_DOMAIN || !REACT_APP_AUDIENCE) {
-  throw new Error(
-    "Please make sure that auth_config.json is in place and populated"
-  );
-}
+// if (!REACT_APP_DOMAIN || !REACT_APP_AUDIENCE) {
+//   throw new Error(
+//     "Please make sure that auth_config.json is in place and populated"
+//   );
+// }
 
 //set up JWT check
 const checkJwt = jwt({
@@ -62,6 +62,11 @@ function doRequest(options) {
     });
   });
 }
+
+app.get('/api/testing', async (req, res) => {
+  return res.status(200).send("just added the metadata");
+}
+)
 
 //main post request
 app.post(

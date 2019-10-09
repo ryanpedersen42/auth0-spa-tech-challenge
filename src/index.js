@@ -6,6 +6,8 @@ import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./react-auth0-spa";
 import config from "./auth_config";
 import history from "./utils/history";
+require('dotenv').config();
+
 
 const onRedirectCallback = appState => {
   history.push(

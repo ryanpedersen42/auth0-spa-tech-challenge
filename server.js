@@ -88,7 +88,7 @@ app.post(
     res.locals.token = token;
     try {
       const response = await doRequest(getTokenOptions);
-      console.log(response);
+
       //pass through access token
       res.locals.access_token = response.access_token;
       next();
@@ -117,7 +117,7 @@ app.post(
       console.log("err: ", err);
       res.status(500);
     }
-    console.log(res.locals);
+    // console.log(res.locals);
     return res.status(200).send("got through it!");
   },
   async (req, res, next) => {

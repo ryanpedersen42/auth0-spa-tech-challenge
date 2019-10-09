@@ -22,7 +22,7 @@ const ExternalApi = () => {
       }
 
       const theURL = "https://auth0-apis.herokuapp.com/api/external"
-      const response = await fetch(theURL, {
+      const response = await fetch('/api/external', {
         method: 'post',
         headers : { 
           'Content-Type': 'application/json',

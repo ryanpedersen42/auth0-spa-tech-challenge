@@ -154,7 +154,7 @@ const readConnections = googleToken => {
 
 app.post(
   "/api/test",
-  checkJwt,
+  // checkJwt,
   async (req, res, next) => {
     const { token, userEmail, user } = req.body.bodyObject;
 

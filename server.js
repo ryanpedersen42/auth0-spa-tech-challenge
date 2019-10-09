@@ -45,7 +45,7 @@ const checkJwt = jwt({
     jwksRequestsPerMinute: 5,
     jwksUri: `https://${REACT_APP_DOMAIN}/.well-known/jwks.json`
   }),
-  audience: REACT_APP_AUDIENCE,
+  // audience: REACT_APP_AUDIENCE,
   issuer: `https://${REACT_APP_DOMAIN}/`,
   algorithm: ["RS256"]
 });
@@ -71,7 +71,7 @@ app.get('/api/testing', async (req, res) => {
 //main post request
 app.post(
   "/api/external",
-  checkJwt,
+  // checkJwt,
   async (req, res, next) => {
     const { user, token } = req.body.bodyObject;
 

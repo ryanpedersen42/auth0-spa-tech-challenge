@@ -118,7 +118,7 @@ app.post(
       const serviceUrl =
         "https://people.googleapis.com/v1/people/me/connections?personFields=relations";
     
-      var config = {
+      var googleConfig = {
         method: "GET",
         url: serviceUrl,
         headers: {
@@ -126,7 +126,7 @@ app.post(
           Accept: "application/json"
         }
       };
-    
+        
       request(config, (err, res, body) => {
         if (err) console.log(err);
         else console.log(body);
@@ -134,8 +134,12 @@ app.post(
     };
 
     try {
-      console.log(googleToken);
-      readConnections(googleToken)
+      // console.log(googleToken);
+      // readConnections(googleToken)
+      const googleResponse = await doRequest(googleConfig)
+      return res.status(200).send(googleResponse.totalPeople);
+
+
     } catch (err) {
       console.log("err", err);
     }

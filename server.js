@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require("express");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
-const authConfig = require("./src/auth_config");
+//const authConfig = require("./src/auth_config.json");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
@@ -11,7 +11,7 @@ const helmet = require("helmet");
 const { join } = require("path");
 var request = require("request");
 
-const { google } = require("googleapis");
+const {REACT_APP_DOMAIN, CLIENT_ID_BACK, REACT_APP_AUDIENCE, CLIENT_SECRET, SERVER_AUDIENCE, FULLCONTACT_TOKEN} = process.env;
 
 const app = express();
 
@@ -31,7 +31,7 @@ app.use(helmet());
 app.use(express.static(join(__dirname, "build")));
 
 //check config
-if (!authConfig.domain || !authConfig.audience) {
+if (!REACT_APP_DOMAIN || !REACT_APP_AUDIENCE) {
   throw new Error(
     "Please make sure that auth_config.json is in place and populated"
   );
@@ -43,10 +43,10 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${authConfig.domain}/.well-known/jwks.json`
+    jwksUri: `https://${REACT_APP_DOMAIN}/.well-known/jwks.json`
   }),
-  audience: authConfig.audience,
-  issuer: `https://${authConfig.domain}/`,
+  audience: REACT_APP_AUDIENCE,
+  issuer: `https://${REACT_APP_DOMAIN}/`,
   algorithm: ["RS256"]
 });
 
@@ -75,7 +75,7 @@ app.post(
       method: "POST",
       url: "https://dev-irmh6clw.auth0.com/oauth/token",
       headers: { "content-type": "application/json" },
-      body: `{"client_id":"${authConfig.client_id}","client_secret":"${authConfig.client_secret}","audience":"${authConfig.server_audience}","grant_type":"client_credentials"}`
+      body: `{"client_id":"${CLIENT_ID_BACK}","client_secret":"${CLIENT_SECRET}","audience":"${SERVER_AUDIENCE}","grant_type":"client_credentials"}`
     };
 
     //pass through user that was in initial post header
@@ -158,7 +158,7 @@ app.post(
       method: "POST",
       url: "https://dev-irmh6clw.auth0.com/oauth/token",
       headers: { "content-type": "application/json" },
-      body: `{"client_id":"${authConfig.client_id}","client_secret":"${authConfig.client_secret}","audience":"${authConfig.server_audience}","grant_type":"client_credentials"}`
+      body: `{"client_id":"${CLIENT_ID_BACK}","client_secret":"${CLIENT_SECRET}","audience":"${SERVER_AUDIENCE}","grant_type":"client_credentials"}`
     };
 
     //pass through user that was in initial post header
@@ -205,7 +205,7 @@ app.post(
       method: "POST",
       url: `https://api.fullcontact.com/v3/person.enrich`,
       headers: {
-        authorization: `Bearer ${authConfig.fullContact_token}`
+        authorization: `Bearer ${FULLCONTACT_TOKEN}`
       },
       body: JSON.stringify({ email: email })
     };
@@ -246,8 +246,8 @@ app.post(
   }
 );
 
-app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, "build/index.html"));
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(join(__dirname, "build/index.html"));
+// })
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));

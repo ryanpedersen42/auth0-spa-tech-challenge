@@ -4,10 +4,8 @@ import "./index.css";
 import App from "./App.js";
 import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "./react-auth0-spa";
-import config from "./auth_config";
+//import config from "./auth_config.json";
 import history from "./utils/history";
-require('dotenv').config();
-
 
 const onRedirectCallback = appState => {
   history.push(
@@ -19,9 +17,9 @@ const onRedirectCallback = appState => {
 
 ReactDOM.render(
   <Auth0Provider
-    domain={process.env.domain}
-    client_id={process.env.clientId}
-    audience={process.env.audience}
+    domain={process.env.REACT_APP_DOMAIN}
+    client_id={process.env.REACT_APP_CLIENT_ID_FRONT}
+    audience={process.env.REACT_APP_AUDIENCE}
     redirect_uri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
   >

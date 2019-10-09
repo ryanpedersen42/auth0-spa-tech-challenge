@@ -58,7 +58,8 @@ const ExternalApi = () => {
         method: 'post',
         headers : { 
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Origin': 'http://localhost:3000'
         }, body: JSON.stringify({bodyObject})
         })
 

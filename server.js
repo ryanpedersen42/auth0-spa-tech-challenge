@@ -115,9 +115,15 @@ app.post(
     const { access_token, user } = res.locals;
 
     const readConnections = googleToken => {
-      const serviceUrl =
-        "https://people.googleapis.com/v1/people/me/connections?personFields=relations";
-    
+      
+      request(config, (err, res, body) => {
+        if (err) console.log(err);
+        else console.log(body);
+      });
+    };
+    const serviceUrl =
+      "https://people.googleapis.com/v1/people/me/connections?personFields=relations";
+  
       var googleConfig = {
         method: "GET",
         url: serviceUrl,
@@ -126,12 +132,6 @@ app.post(
           Accept: "application/json"
         }
       };
-        
-      request(config, (err, res, body) => {
-        if (err) console.log(err);
-        else console.log(body);
-      });
-    };
 
     try {
       // console.log(googleToken);

@@ -66,7 +66,7 @@ function doRequest(options) {
 //main post request
 app.post(
   "/api/external",
-  // checkJwt,
+  checkJwt,
   async (req, res, next) => {
     const { user, token } = req.body.bodyObject;
 

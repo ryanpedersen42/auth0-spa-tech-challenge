@@ -100,6 +100,7 @@ app.post(
       const response = await doRequest(options);
 
       res.locals.googleToken = response.identities[0].access_token;
+      console.log(response.identities[0].access_token)
       next();
     } catch (err) {
       console.log("err: ", err);

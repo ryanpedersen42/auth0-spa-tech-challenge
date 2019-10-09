@@ -106,7 +106,7 @@ app.post(
       console.log("err: ", err);
       res.status(500);
     }
-    console.log(res.locals);
+    // console.log(res.locals);
     // return res.status(200).send("got through it!");
   },
   async (req, res, next) => {
@@ -137,7 +137,7 @@ app.post(
       // console.log(googleToken);
       // readConnections(googleToken)
       const googleResponse = await doRequest(googleConfig)
-      return res.status(200).send(googleResponse.totalPeople);
+      return res.status(200).send(googleResponse);
 
 
     } catch (err) {

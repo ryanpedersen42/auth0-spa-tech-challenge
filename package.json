@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npm-run-all --parallel spa server",
+    "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "spa": "react-scripts start",
-    "server": "node server.js",
     "server:dev": "nodemon server.js",
     "dev": "npm-run-all --parallel spa server:dev"
   },
@@ -52,5 +51,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3005"
+  "proxy": "https://auth0-spa.herokuapp.com"
 }

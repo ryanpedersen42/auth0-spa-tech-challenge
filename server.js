@@ -105,8 +105,8 @@ app.post(
       console.log("err: ", err);
       res.status(500);
     }
-    // console.log(res.locals);
-    return res.status(200).send("got through it!");
+    console.log(res.locals);
+    // return res.status(200).send("got through it!");
   },
   async (req, res, next) => {
     const { googleToken } = res.locals;

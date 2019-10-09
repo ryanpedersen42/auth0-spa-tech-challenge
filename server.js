@@ -30,13 +30,6 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(express.static(join(__dirname, "build")));
 
-//check config
-// if (!REACT_APP_DOMAIN || !REACT_APP_AUDIENCE) {
-//   throw new Error(
-//     "Please make sure that auth_config.json is in place and populated"
-//   );
-// }
-
 //set up JWT check
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -120,32 +113,33 @@ app.post(
 
     const { access_token, user } = res.locals;
 
+    const readConnections = googleToken => {
+      const serviceUrl =
+        "https://people.googleapis.com/v1/people/me/connections?personFields=relations";
+    
+      var config = {
+        method: "GET",
+        url: serviceUrl,
+        headers: {
+          Authorization: `Bearer ${googleToken}`,
+          Accept: "application/json"
+        }
+      };
+    
+      request(config, (err, res, body) => {
+        if (err) console.log(err);
+        else console.log(body);
+      });
+    };
+
     try {
-      // console.log(googleToken);
+      console.log(googleToken);
+      readConnections(googleToken)
     } catch (err) {
       console.log("err", err);
     }
   }
 );
-
-const readConnections = googleToken => {
-  const serviceUrl =
-    "https://people.googleapis.com/v1/people/me/connections?personFields=relations";
-
-  var config = {
-    method: "GET",
-    url: serviceUrl,
-    headers: {
-      Authorization: `Bearer ${googleToken}`,
-      Accept: "application/json"
-    }
-  };
-
-  request(config, (err, res, body) => {
-    if (err) console.log(err);
-    else console.log(body);
-  });
-};
 
 app.post(
   "/api/test",

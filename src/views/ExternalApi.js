@@ -13,21 +13,18 @@ const ExternalApi = () => {
       const token = await getTokenSilently();
       const fullUser = await getUser();
       const user = fullUser.sub;
-      console.log(token)
-      console.log(fullUser)
 
       const bodyObject = {
         token: token,
         user: user,
       }
 
-      const theURL = "https://auth0-apis.herokuapp.com/api/external"
       const response = await fetch('/api/external', {
         method: 'post',
         headers : { 
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': 'http://localhost:3000'
+          // 'Access-Control-Allow-Origin': 'http://localhost:3000'
         }, 
         body: JSON.stringify({bodyObject})
         })
@@ -59,7 +56,7 @@ const ExternalApi = () => {
         headers : { 
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': 'http://localhost:3000'
+          // 'Access-Control-Allow-Origin': 'http://localhost:3000'
         }, body: JSON.stringify({bodyObject})
         })
 

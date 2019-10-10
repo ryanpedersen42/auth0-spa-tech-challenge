@@ -1,9 +1,8 @@
-require('dotenv').config();
+require("dotenv").config();
 
 const express = require("express");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
-//const authConfig = require("./src/auth_config.json");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
@@ -11,7 +10,14 @@ const helmet = require("helmet");
 const { join } = require("path");
 var request = require("request");
 
-const {REACT_APP_DOMAIN, CLIENT_ID_BACK, REACT_APP_AUDIENCE, CLIENT_SECRET, SERVER_AUDIENCE, FULLCONTACT_TOKEN} = process.env;
+const {
+  REACT_APP_DOMAIN,
+  CLIENT_ID_BACK,
+  REACT_APP_AUDIENCE,
+  CLIENT_SECRET,
+  SERVER_AUDIENCE,
+  FULLCONTACT_TOKEN
+} = process.env;
 
 const app = express();
 
@@ -85,31 +91,35 @@ app.post(
       res.status(500);
     }
   },
-    //next request to see if the user already has gender metadata
-    async (req, res, next) => {
-      const { access_token, user } = res.locals;
-  
-      //next set of options to get user info from mgmt API with token
-      var userInfoOptions = {
-        method: "GET",
-        url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
-        headers: { authorization: `Bearer ${access_token}` }
-      };
-  
-      try {
-        //see if they already have metadata
-        const response = await doRequest(userInfoOptions);
-        if (!response.user_metadata.googleConnections) {
-          return next();
-        }
-        // return res.status(200).send({'total connections': googleResponse.totalPeople});
+  //next request to see if the user already has gender metadata
+  async (req, res, next) => {
+    const { access_token, user } = res.locals;
 
-        return res.status(200).send({'there are some connections': response.user_metadata.googleConnections});
-      } catch (err) {
-        console.log("err: ", err);
-        res.status(500);
+    //next set of options to get user info from mgmt API with token
+    var userInfoOptions = {
+      method: "GET",
+      url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
+      headers: { authorization: `Bearer ${access_token}` }
+    };
+
+    try {
+      //see if they already have metadata
+      const response = await doRequest(userInfoOptions);
+      if (!response.user_metadata.googleConnections) {
+        return next();
       }
-    },
+      // return res.status(200).send({'total connections': googleResponse.totalPeople});
+
+      return res
+        .status(200)
+        .send({
+          "there are some connections": response.user_metadata.googleConnections
+        });
+    } catch (err) {
+      console.log("err: ", err);
+      res.status(500);
+    }
+  },
   //function to get google token
   async (req, res, next) => {
     const { access_token, user, token } = res.locals;
@@ -136,31 +146,28 @@ app.post(
   async (req, res, next) => {
     const { googleToken } = res.locals;
 
-    const serviceUrl =
-      "https://people.googleapis.com/v1/people/me/connections?personFields=relations";
-  
-      var googleConfig = {
-        method: "GET",
-        url: serviceUrl,
-        headers: {
-          Authorization: `Bearer ${googleToken}`,
-          Accept: "application/json"
-        }
-      };
+    const serviceUrl = "https://people.googleapis.com/v1/people/me/connections?personFields=relations";
+
+    var googleConfig = {
+      method: "GET",
+      url: serviceUrl,
+      headers: {
+        Authorization: `Bearer ${googleToken}`,
+        Accept: "application/json"
+      }
+    };
 
     try {
-
-      const googleResponse = await doRequest(googleConfig)
-      res.locals.googleConnections = toString(googleResponse.totalPeople)
-      next()
-
+      const googleResponse = await doRequest(googleConfig);
+      res.locals.googleConnections = toString(googleResponse.totalPeople);
+      next();
     } catch (err) {
       console.log("err", err);
     }
   },
-  async (req, res ) => {
+  async (req, res) => {
     const { user, access_token, googleConnections } = res.locals;
-  
+
     var metadataOptions = {
       method: "PATCH",
       url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
@@ -171,11 +178,11 @@ app.post(
       body: { user_metadata: { googleConnections: googleConnections } },
       json: true
     };
-  
+
     try {
       request(metadataOptions, function(error, response, body) {
         if (error) throw new Error(error);
-  
+
         console.log(body);
       });
     } catch (err) {
@@ -232,7 +239,7 @@ app.post(
       if (!response.user_metadata.gender) {
         return next();
       }
-      return res.status(200).send(response.user_metadata);
+      return res.status(200).send(response.user_metadata.gender);
     } catch (err) {
       console.log("err: ", err);
       res.status(500);
@@ -261,7 +268,7 @@ app.post(
     }
   },
   //patch request to add in the gender metadata from fullcontact
-  async (req, res ) => {
+  async (req, res) => {
     const { user, access_token, gender } = res.locals;
 
     var metadataOptions = {

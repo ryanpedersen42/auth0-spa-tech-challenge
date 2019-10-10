@@ -12,30 +12,29 @@ const ExternalApi = () => {
     const token = await getTokenSilently();
     const fullUser = await getUser();
     const user = fullUser.sub;
-    
+
     const bodyObject = {
       token: token,
-      user: user,
-    }
-    
-    const googleFetch = await fetch('/api/google', {
-      method: 'post',
-      headers : { 
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }, 
-      body: JSON.stringify({bodyObject})
-    })
-    
+      user: user
+    };
+
+    const googleFetch = await fetch("/api/google", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ bodyObject })
+    });
+
     try {
       const googleResponseData = await googleFetch.json();
 
       setShowResult(true);
       setApiMessage(googleResponseData);
-
-      } catch (error) {
-        console.error(error);
-      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getMetadata = async () => {
@@ -47,34 +46,38 @@ const ExternalApi = () => {
     const bodyObject = {
       token: token,
       userEmail: userEmail,
-      user: user,
-    }
+      user: user
+    };
 
     const metadataFetch = await fetch("/api/gender", {
-      method: 'post',
-      headers : { 
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      }, body: JSON.stringify({bodyObject})
-    })
-    
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ bodyObject })
+    });
+
     try {
       const genderResponseData = await metadataFetch.json();
 
       setShowResult(true);
       setApiMessage(genderResponseData);
-
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <>
       <div className="mb-5">
         <h1>Call the APIs</h1>
 
-        <Button color="primary" className="mt-5" onClick={getGoogleContactNumber}>
+        <Button
+          color="primary"
+          className="mt-5"
+          onClick={getGoogleContactNumber}
+        >
           Get Google Connections
         </Button>
         <Button color="primary" className="mt-5" onClick={getMetadata}>

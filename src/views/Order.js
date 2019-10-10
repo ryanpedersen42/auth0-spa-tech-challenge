@@ -13,24 +13,20 @@ const OrderPage = () => {
   }
 
   const alertThis = () => {
-    alert('one large cheese pizza coming right up')
-  }
+    alert("one large cheese pizza coming right up");
+  };
 
   return (
     <Container className="mb-5">
-        {
-          user.email_verified ? 
-          (
-          <Button color="primary" className="mt-5" onClick={alertThis}>
-            Order Pizza
-          </Button>
-          ) : 
-          (
-          <p>
-            sorry, you need to confirm your email address before you can order
-          </p>
-          )
-        }
+      {user.email_verified ? (
+        <Button color="primary" className="mt-5" onClick={alertThis}>
+          Order Pizza
+        </Button>
+      ) : (
+        <p>
+          sorry, you need to confirm your email address before you can order
+        </p>
+      )}
     </Container>
   );
 };

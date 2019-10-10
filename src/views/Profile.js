@@ -27,10 +27,12 @@ const Profile = () => {
           <p className="lead text-muted">{user.email}</p>
         </Col>
         <Col md>
-          <p className="lead text-muted">{user.email_verified && (
-            // eslint-disable-next-line
-            <span>✔️ verified account</span>)
-            }</p>
+          <p className="lead text-muted">
+            {user.email_verified && (
+              // eslint-disable-next-line
+              <span>✔️ verified account</span>
+            )}
+          </p>
         </Col>
       </Row>
       <Row>

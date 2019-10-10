@@ -137,7 +137,9 @@ app.post(
       // console.log(googleToken);
       // readConnections(googleToken)
       const googleResponse = await doRequest(googleConfig)
-      return res.status(200).send(googleResponse);
+      console.log('first', googleResponse.totalPeople)
+      console.log('second', googleResponse)
+      return res.status(200).send(googleResponse.totalPeople);
 
 
     } catch (err) {

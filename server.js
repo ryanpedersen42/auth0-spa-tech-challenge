@@ -239,7 +239,11 @@ app.post(
       if (!response.user_metadata.gender) {
         return next();
       }
-      return res.status(200).send(response.user_metadata.gender);
+      return res
+      .status(200)
+      .send({
+        "gender is here": response.user_metadata.gender
+      });
     } catch (err) {
       console.log("err: ", err);
       res.status(500);

@@ -102,7 +102,7 @@ app.post(
         if (!response.user_metadata.googleConnections) {
           return next();
         }
-        return res.status(200).send(toString(response.user_metadata.googleConnections));
+        return res.status(200).send(response.user_metadata.googleConnections);
       } catch (err) {
         console.log("err: ", err);
         res.status(500);
@@ -149,7 +149,7 @@ app.post(
     try {
 
       const googleResponse = await doRequest(googleConfig)
-      res.locals.googleConnections = googleResponse.totalPeople
+      res.locals.googleConnections = toString(googleResponse.totalPeople)
       next()
       // return res.status(200).send({'total connections': googleResponse.totalPeople});
 

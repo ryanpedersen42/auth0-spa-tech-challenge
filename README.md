@@ -37,8 +37,6 @@ If you log in with email / password, you will receive an email to verify. <br>
 If the profile has been verified, a verification checkmark is added to the profile page.<br>
 You can click the order button once you have verified. <br>
 
-<br>
-
 ### API Calls
 The API tests are under the External API tab.<br>
 If you are authenticated with Google, the Google Connections button queries the Google People API. If this is the first time you are making the call, it will store the results in your Auth0 metadata. If you have already stored it in your metadata, it returns the number of connections that you have. <br>

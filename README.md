@@ -29,10 +29,17 @@ Nodemon will restart the server if you make any edits to the APIs <br>
 You will also see any lint errors in the console.
 
 ## Usage 
+### Authentication
 You can log in with email or password or Google. <br>
-If you log in with email / password, you will receive an email to verify. You can click the order button once you have verified. <br>
-You can see if you are verified on your profile page.<br>
+
+### Verification
+If you log in with email / password, you will receive an email to verify. <br>
+If the profile has been verified, a verification checkmark is added to the profile page.<br>
+You can click the order button once you have verified. <br>
+
 <br>
-You can test out the APIs on the External API tab.<br>
-The Google Connections button queries the Google People API and returns the number of connections that you have. <br>
-The Get Gender button queries FullContact and tries to get the gender of the user; if it returns one, it stores it to metadata.
+
+### API Calls
+The API tests are under the External API tab.<br>
+If you are authenticated with Google, the Google Connections button queries the Google People API. If this is the first time you are making the call, it will store the results in your Auth0 metadata. If you have already stored it in your metadata, it returns the number of connections that you have. <br>
+The Get Gender button queries the FullContact API and tries to get the gender of the user. If FullContact successfully returns a result, it will be stored in your Auth0 metadata. Once this is stored in your metadata, the call will return the result. 

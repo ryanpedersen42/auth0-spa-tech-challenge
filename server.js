@@ -177,7 +177,7 @@ app.post(
     }
   },
   async (req, res, next) => {
-    const { access_token, user, token } = res.locals;
+    const { access_token, user } = res.locals;
 
     //next set of options to get user info from mgmt API with token
     var userInfoOptions = {
@@ -219,7 +219,7 @@ app.post(
       console.log("final", err);
     }
   },
-  async (req, res, next) => {
+  async (req, res ) => {
     const { user, access_token, gender } = res.locals;
 
     var metadataOptions = {

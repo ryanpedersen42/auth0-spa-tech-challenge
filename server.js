@@ -139,8 +139,7 @@ app.post(
       const googleResponse = await doRequest(googleConfig)
       console.log('first', googleResponse.totalPeople)
       console.log('second', googleResponse)
-      return res.status(200).send(googleResponse.totalPeople);
-
+      return res.send(googleResponse.totalPeople);
 
     } catch (err) {
       console.log("err", err);

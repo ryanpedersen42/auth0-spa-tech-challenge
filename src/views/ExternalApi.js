@@ -18,7 +18,7 @@ const ExternalApi = () => {
       user: user,
     }
     
-    const googleFetch = await fetch('/api/external', {
+    const googleFetch = await fetch('/api/google', {
       method: 'post',
       headers : { 
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const ExternalApi = () => {
       user: user,
     }
 
-    const metadataFetch = await fetch("/api/test", {
+    const metadataFetch = await fetch("/api/gender", {
       method: 'post',
       headers : { 
         'Content-Type': 'application/json',

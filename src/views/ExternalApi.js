@@ -29,7 +29,8 @@ const ExternalApi = () => {
         body: JSON.stringify({bodyObject})
         })
 
-      const responseData = await response.text();
+      const responseData = await response.json();
+      
       setShowResult(true);
       setApiMessage(responseData);
 
@@ -64,6 +65,7 @@ const ExternalApi = () => {
 
       setShowResult(true);
       setApiMessage(responseData2);
+
     } catch (error) {
       console.error(error);
     }

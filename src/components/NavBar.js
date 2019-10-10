@@ -57,7 +57,7 @@ const NavBar = () => {
                       exact
                       activeClassName="router-link-exact-active"
                     >
-                      External API
+                      API Calls
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -111,7 +111,7 @@ const NavBar = () => {
                       onClick={() => logoutWithRedirect()}
                     >
                       <FontAwesomeIcon icon="power-off" className="mr-3" /> Log
-                      out
+                      Out
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -126,7 +126,7 @@ const NavBar = () => {
                     block
                     onClick={() => loginWithRedirect({})}
                   >
-                    Log in
+                    Log In
                   </Button>
                 </NavItem>
               </Nav>
@@ -164,7 +164,7 @@ const NavBar = () => {
                     id="qsLogoutBtn"
                     onClick={() => logoutWithRedirect()}
                   >
-                    Log out
+                    Log Out
                   </RouterNavLink>
                 </NavItem>
               </Nav>

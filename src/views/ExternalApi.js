@@ -8,38 +8,37 @@ const ExternalApi = () => {
   const [apiMessage, setApiMessage] = useState("");
   const { getTokenSilently, getUser } = useAuth0();
 
-  const callApi = async () => {
+  const getGoogleContactNumber = async () => {
+    const token = await getTokenSilently();
+    const fullUser = await getUser();
+    const user = fullUser.sub;
+    
+    const bodyObject = {
+      token: token,
+      user: user,
+    }
+    
+    const googleFetch = await fetch('/api/external', {
+      method: 'post',
+      headers : { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }, 
+      body: JSON.stringify({bodyObject})
+    })
+    
     try {
-      const token = await getTokenSilently();
-      const fullUser = await getUser();
-      const user = fullUser.sub;
+      const googleResponseData = await googleFetch.json();
 
-      const bodyObject = {
-        token: token,
-        user: user,
-      }
-
-      const response = await fetch('/api/external', {
-        method: 'post',
-        headers : { 
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          // 'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }, 
-        body: JSON.stringify({bodyObject})
-        })
-
-      const responseData = await response.json();
-      
       setShowResult(true);
-      setApiMessage(responseData);
+      setApiMessage(googleResponseData);
 
       } catch (error) {
         console.error(error);
       }
   };
 
-  const checkMetadata = async () => {
+  const getMetadata = async () => {
     const token = await getTokenSilently();
     const fullUser = await getUser();
     const userEmail = fullUser.email;
@@ -51,20 +50,19 @@ const ExternalApi = () => {
       user: user,
     }
 
+    const metadataFetch = await fetch("/api/test", {
+      method: 'post',
+      headers : { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      }, body: JSON.stringify({bodyObject})
+    })
+    
     try {
-      const metadataFetch = await fetch("/api/test", {
-        method: 'post',
-        headers : { 
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          // 'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }, body: JSON.stringify({bodyObject})
-        })
-
-      const responseData2 = await metadataFetch.json();
+      const genderResponseData = await metadataFetch.json();
 
       setShowResult(true);
-      setApiMessage(responseData2);
+      setApiMessage(genderResponseData);
 
     } catch (error) {
       console.error(error);
@@ -76,10 +74,10 @@ const ExternalApi = () => {
       <div className="mb-5">
         <h1>Call the APIs</h1>
 
-        <Button color="primary" className="mt-5" onClick={callApi}>
-          Get Connections
+        <Button color="primary" className="mt-5" onClick={getGoogleContactNumber}>
+          Get Google Connections
         </Button>
-        <Button color="primary" className="mt-5" onClick={checkMetadata}>
+        <Button color="primary" className="mt-5" onClick={getMetadata}>
           Get Gender
         </Button>
       </div>

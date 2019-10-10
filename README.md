@@ -34,5 +34,5 @@ If you log in with email / password, you will receive an email to verify. You ca
 You can see if you are verified on your profile page.<br>
 <br>
 You can test out the APIs on the External API tab.<br>
-The Google Connections call queries the Google People API and returns the number of connections that you have. <br>
-The Get Gender call queries FullContact and tries to get the gender of the user; if it returns one, it stores it to metadata.
+The Google Connections button queries the Google People API and returns the number of connections that you have. <br>
+The Get Gender button queries FullContact and tries to get the gender of the user; if it returns one, it stores it to metadata.

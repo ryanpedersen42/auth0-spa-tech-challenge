@@ -29,6 +29,7 @@ const ExternalApi = () => {
 
     try {
       const googleResponseData = await googleFetch.json();
+      await console.log(token)
 
       setShowResult(true);
       setApiMessage(googleResponseData);

@@ -36,7 +36,7 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(express.static(join(__dirname, "build")));
 
-//set up JWT check
+//middleware to set up JWT check and set req.user 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
@@ -44,6 +44,7 @@ const checkJwt = jwt({
     jwksRequestsPerMinute: 5,
     jwksUri: `https://${REACT_APP_DOMAIN}/.well-known/jwks.json`
   }),
+  //check the pieces that 
   audience: REACT_APP_AUDIENCE,
   issuer: `https://${REACT_APP_DOMAIN}/`,
   algorithm: ["RS256"]
@@ -57,6 +58,7 @@ function doRequest(options) {
         reject(error);
         return;
       }
+      //go inside body.body because the request function also takes a body field in
       resolve(JSON.parse(body.body));
     });
   });
@@ -67,6 +69,7 @@ app.post(
   "/api/google",
   checkJwt,
   async (req, res, next) => {
+    //can also get user from req.user after the jwt middleware
     const { user, token } = req.body.bodyObject;
 
     //initial token options to call for users oauth token
@@ -108,7 +111,6 @@ app.post(
       if (!response.user_metadata.googleConnections) {
         return next();
       }
-      // return res.status(200).send({'total connections': googleResponse.totalPeople});
 
       return res
         .status(200)
@@ -197,6 +199,7 @@ app.post(
   checkJwt,
   //first request to get info from Auth0
   async (req, res, next) => {
+    //can also get user from req.user after the jwt middleware
     const { token, userEmail, user } = req.body.bodyObject;
 
     //initial token options to call for users oauth token

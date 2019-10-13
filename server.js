@@ -148,11 +148,9 @@ app.post(
   async (req, res, next) => {
     const { googleToken } = res.locals;
 
-    const serviceUrl = "https://people.googleapis.com/v1/people/me/connections?personFields=relations";
-
     var googleConfig = {
       method: "GET",
-      url: serviceUrl,
+      url: "https://people.googleapis.com/v1/people/me/connections?personFields=relations",
       headers: {
         Authorization: `Bearer ${googleToken}`,
         Accept: "application/json"
@@ -170,6 +168,7 @@ app.post(
   async (req, res) => {
     const { user, access_token, googleConnections } = res.locals;
 
+    //add metadata for connection number
     var metadataOptions = {
       method: "PATCH",
       url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
@@ -184,7 +183,8 @@ app.post(
     try {
       request(metadataOptions, function(error, response, body) {
         if (error) throw new Error(error);
-
+        
+        //log body for testing & to see data
         console.log(body);
       });
     } catch (err) {
@@ -278,6 +278,7 @@ app.post(
   async (req, res) => {
     const { user, access_token, gender } = res.locals;
 
+    //add metadata for gender
     var metadataOptions = {
       method: "PATCH",
       url: `https://dev-irmh6clw.auth0.com/api/v2/users/${user}`,
@@ -293,6 +294,7 @@ app.post(
       request(metadataOptions, function(error, response, body) {
         if (error) throw new Error(error);
 
+        //log body for testing & to see data
         console.log(body);
       });
     } catch (err) {

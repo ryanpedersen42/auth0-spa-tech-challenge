@@ -29,7 +29,7 @@ Nodemon will restart the server if you make any edits to the APIs <br>
 You will also see any lint errors in the console.
 
 ### APIs
-In addition to Auth0, this project makes use of two APIs: Google People and FullContact. <br>
+In addition to Auth0, this project makes use of the Google People and FullContact APIs. <br>
 OF NOTE: To use the Google People API to access contacts, you need to select that option inside of Auth0 (Dashboard > Connections > Social > Google > Permissions). Google requires production apps to be verified, but testing is OK. End users will need to accept that the Pizza 42 will access their contacts and to acknowledge that they know Google hasn't verified the app.
 
 ## Usage 

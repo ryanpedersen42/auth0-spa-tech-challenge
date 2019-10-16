@@ -28,14 +28,17 @@ The page will reload if you make edits to the src directory.<br>
 Nodemon will restart the server if you make any edits to the APIs <br>
 You will also see any lint errors in the console.
 
+### APIs
+In addition to Auth0, this project makes use of two APIs: Google People and FullContact. <br>
+OF NOTE: To use the Google People API to access contacts, you need to select that option inside of Auth0 (Dashboard > Connections > Social > Google > Permissions). Google requires production apps to be verified, but testing is OK. End users will need to accept that the Pizza 42 will access their contacts and to acknowledge that they know Google hasn't verified the app.
+
 ## Usage 
 ### Authentication
-You can log in with email or password or Google. <br>
+You can log in with email/password or Google. <br>
 
 ### Verification
-If you log in with email / password, you will receive an email to verify. <br>
-If the profile has been verified, a verification checkmark is added to the profile page.<br>
-You can click the order button once you have verified. <br>
+If you log in with email/password, you will receive an email to verify your email address. <br>
+Once the profile has been verified, a verification checkmark is added to the profile page, and you can click the order button.<br>
 
 ### API Calls
 The API tests are under the External API tab.<br>

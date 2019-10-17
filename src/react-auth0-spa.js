@@ -5,8 +5,11 @@ import createAuth0Client from "@auth0/auth0-spa-js";
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
 
+//use context similar to redux.. 
 export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
+
+//info that is set up in index.js
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
@@ -20,6 +23,7 @@ export const Auth0Provider = ({
 
   useEffect(() => {
     const initAuth0 = async () => {
+      //Create the Auth0Client instance before rendering or initializing application (only create one instance)
       const auth0FromHook = await createAuth0Client(initOptions);
       setAuth0(auth0FromHook);
 
@@ -32,6 +36,7 @@ export const Auth0Provider = ({
 
       setIsAuthenticated(isAuthenticated);
 
+      //After the user is authenticated, you can retrieve the user profile with the getUser() method.
       if (isAuthenticated) {
         const user = await auth0FromHook.getUser();
         setUser(user);

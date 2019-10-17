@@ -44,3 +44,8 @@ Once the profile has been verified, a verification checkmark is added to the pro
 The API tests are under the External API tab.<br>
 If you are authenticated with Google, the Google Connections button queries the Google People API. If this is the first time you are making the call, it will store the results in your Auth0 metadata. If you have already stored it in your metadata, it returns the number of connections that you have. <br>
 The Get Gender button queries the FullContact API and tries to get the gender of the user. If FullContact successfully returns a result, it will be stored in your Auth0 metadata. Once this is stored in your metadata, the call will return the result. 
+
+Using Pizza 42
+![Authentication](/src/assets/Auth_Process.gif)
+![Confirming Verification](/src/assets/Verified_Account.gif)
+![API Calls](/src/assets/API_Calls.gif)

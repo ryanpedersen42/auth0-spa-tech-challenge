@@ -1,4 +1,4 @@
-# Auth0 Technical Challenge
+# Auth0 Demo
 
 ## Running the application
 
